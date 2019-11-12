@@ -362,19 +362,20 @@ public class Camera {
 
   public void stopVideoRecording(@NonNull final Result result) {
     if (!recordingVideo) {
-      result.success(null);
-      return;
-    }
+        result.success(null);
+        return;
+      }
 
-    try {
-      recordingVideo = false;
-      mediaRecorder.stop();
-      mediaRecorder.reset();
-      startPreview();
-      result.success(null);
-    } catch (CameraAccessException | IllegalStateException e) {
-      result.error("videoRecordingFailed", e.getMessage(), null);
-    }
+      try {
+        recordingVideo = false;
+        closeCaptureSession(); // new
+        mediaRecorder.stop();
+        mediaRecorder.reset();
+        startPreview();
+        result.success(null);
+      } catch (CameraAccessException | IllegalStateException e) {
+        result.error("videoRecordingFailed", e.getMessage(), null);
+      }
   }
 
   public void pauseVideoRecording(@NonNull final Result result) {
